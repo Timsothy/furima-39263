@@ -42,7 +42,6 @@ Things you may want to cover:
 
 - has_many :items
 - has_many :orders
-- has_many :order_histories
 
 
 ## itemsテーブル
@@ -62,11 +61,10 @@ Things you may want to cover:
 ### Association
 
 - belongs_to :user
-- has_one    :order
 - has_one    :order_history
 
 
-## ordersテーブル
+## shipping_addressesテーブル
 
 | Column        | Type       | Options                       |
 | ------------  | ---------- | ----------------------------- |
@@ -76,11 +74,11 @@ Things you may want to cover:
 | addresses     | string     | null: false                   |
 | building      | string     |                               |
 | phone_number  | string     | null: false                   |
+| order_history | references | null: false foreign_key: true |
 
 ### Association
 
-- belongs_to :user
-- belongs_to :item
+- belongs_to :order_history 
 
 
 ## order＿historiesテーブル
@@ -94,3 +92,4 @@ Things you may want to cover:
 
 - belongs_to :user
 - belongs_to :item
+- has_one    :shipping_address
