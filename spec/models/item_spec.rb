@@ -28,27 +28,27 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Info can't be blank")
       end
       it 'カテゴリーが未選択では出品できない' do
-        @item.category_id = ''
+        @item.category_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Category can't be blank")
       end
       it '商品の状態が未選択では出品できない' do
-        @item.sales_status_id = ''
+        @item.sales_status_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Sales status can't be blank")
       end
       it '配送料の負担が未選択では出品できない' do
-        @item.shipping_fee_status_id = ''
+        @item.shipping_fee_status_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Shipping fee status can't be blank")
       end
       it '発送元の地域が未選択では出品できない' do
-        @item.prefecture_id = ''
+        @item.prefecture_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Prefecture can't be blank")
       end
       it '発送までの日数が未選択では出品できない' do
-        @item.scheduled_delivery_id = ''
+        @item.scheduled_delivery_id = 1
         @item.valid?
         expect(@item.errors.full_messages).to include("Scheduled delivery can't be blank")
       end
@@ -71,6 +71,11 @@ RSpec.describe Item, type: :model do
         @item.price = '１２３４５６'
         @item.valid?
         expect(@item.errors.full_messages).to include('Price は¥300以上¥9,999,999以下の半角数値で入力してください')
+      end
+      it 'Userが紐づいていない場合は出品できない' do
+        @item.user = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include('User must exist')
       end
     end
   end
