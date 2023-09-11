@@ -5,18 +5,19 @@ class OrderHistoriesController < ApplicationController
   end
 
   def create
-    @order_history = OrderHistory.create(order_history_params)
-    ShippingAddress.create(shipping_address_params)
-    redirect_to root_path
+    @order_form = OrderForm.new(order_history_params)
+    if @order_form.valid?
+      @order_form.save
+      redirect_to root_path
+    else
+      @item = Item.find(params[:item_id])
+      render :index
+    end
   end
 
   private
 
   def order_history_params
-    params.require(:order_history).marge(:item, :user)
-  end
-
-  def shipping_address_params
-    params.require(:shipping_address).permit(:postal_code, :city, :addresses, :building, :phone_number).marge(:prefecture_id)
+    params.require(:order_form).permit(:postal_code, :prefecture_id, :city, :addresses, :building, :phone_number)
   end
 end

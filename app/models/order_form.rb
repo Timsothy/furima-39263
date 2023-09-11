@@ -1,6 +1,6 @@
 class OrderForm
   include ActiveModel::Model
-  attr_accessor :item, :user, :postal_code, :prefecture_id, :city, :addresses, :building, :phone_number, :order_history
+  attr_accessor :item, :postal_code, :prefecture_id, :city, :addresses, :building, :phone_number, :order_history
 
   validates :postal_code, presence: true, format: { with: /\A[0-9]{3}-[0-9]{4}\z/, message: 'is invalid. Include hyphen(-)' }
   validates :prefecture_id, numericality: { other_than: 1, message: "can't be blank" }
@@ -12,8 +12,8 @@ class OrderForm
                                            message: 'is invalid' }
 
   def save
-    OrderHistory.create(item: item, user: user)
+    order_history = OrderHistory.create(item: item)
     ShippingAddress.create(postal_code: postal_code, prefecture_id: prefecture_id, city: city, addresses: addresses,
-                           building: building, phone_number: phone_number)
+                           building: building, phone_number: phone_number, order_history_id: order_history.id)
   end
 end
