@@ -1,6 +1,10 @@
 class OrderHistoriesController < ApplicationController
+  before_action :authenticate_user!, only: [:index]
+  before_action :set_item, only: [:index, :create]
+  before_action :move_to_index, only: [:index]
+  before_action :move_to_index_if_seller, only: [:index]
+
   def index
-    @item = Item.find(params[:item_id])
     @order_form = OrderForm.new
   end
 
@@ -11,7 +15,6 @@ class OrderHistoriesController < ApplicationController
       @order_form.save
       redirect_to root_path
     else
-      @item = Item.find(params[:item_id])
       render :index
     end
   end
@@ -30,5 +33,21 @@ class OrderHistoriesController < ApplicationController
       card: order_history_params[:token],
       currency: 'jpy'
     )
+  end
+
+  def set_item
+    @item = Item.find(params[:item_id])
+  end
+
+  def move_to_index
+    return unless current_user == @item.user
+
+    redirect_to root_path
+  end
+
+  def move_to_index_if_seller
+    return unless user_signed_in? && current_user.id != @item.user_id && @item.sold_out?
+
+    redirect_to root_path
   end
 end

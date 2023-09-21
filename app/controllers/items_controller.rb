@@ -47,14 +47,14 @@ class ItemsController < ApplicationController
                                  :scheduled_delivery_id, :price, :image).merge(user_id: current_user.id)
   end
 
+  def set_item
+    @item = Item.find(params[:id])
+  end
+
   def move_to_index
     return if current_user == @item.user
 
     redirect_to action: :index
-  end
-
-  def set_item
-    @item = Item.find(params[:id])
   end
 
   def move_to_index_if_seller
