@@ -23,4 +23,8 @@ class Item < ApplicationRecord
     only_integer: true,
     message: 'は¥300以上¥9,999,999以下の半角数値で入力してください'
   }
+
+  def sold_out?
+    order_history.present?
+  end
 end
