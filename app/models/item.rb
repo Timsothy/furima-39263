@@ -6,6 +6,7 @@ class Item < ApplicationRecord
   belongs_to :prefecture
   belongs_to :scheduled_delivery
   belongs_to :user
+  has_one    :order_history
   has_one_attached :image
 
   validates :image, presence: true
@@ -22,4 +23,8 @@ class Item < ApplicationRecord
     only_integer: true,
     message: 'は¥300以上¥9,999,999以下の半角数値で入力してください'
   }
+
+  def sold_out?
+    order_history.present?
+  end
 end

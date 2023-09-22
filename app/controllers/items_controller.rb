@@ -2,6 +2,7 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :destroy]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
   before_action :move_to_index, only: [:edit, :destroy]
+  before_action :move_to_index_if_seller, only: [:edit]
 
   def index
     @items = Item.all.order(id: 'DESC')
@@ -46,13 +47,19 @@ class ItemsController < ApplicationController
                                  :scheduled_delivery_id, :price, :image).merge(user_id: current_user.id)
   end
 
+  def set_item
+    @item = Item.find(params[:id])
+  end
+
   def move_to_index
     return if current_user == @item.user
 
     redirect_to action: :index
   end
 
-  def set_item
-    @item = Item.find(params[:id])
+  def move_to_index_if_seller
+    return unless user_signed_in? && current_user.id == @item.user_id && @item.sold_out?
+
+    redirect_to root_path
   end
 end
