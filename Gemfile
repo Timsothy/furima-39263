@@ -73,4 +73,4 @@ gem 'active_hash'
 gem 'pry-rails'
 gem 'payjp'
 gem "aws-sdk-s3", require: false
-gem 'date'
+gem 'date', '3.3.3'
