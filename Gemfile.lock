@@ -370,6 +370,7 @@ DEPENDENCIES
   capistrano-rbenv
   capistrano3-unicorn
   capybara (>= 2.15)
+  date
   devise
   factory_bot_rails
   faker
